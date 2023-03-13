@@ -2,7 +2,7 @@
 Вспомогательные функции
 """
 
-from typing import Iterable, Iterator
+from typing import Iterable, Iterator, Any
 
 
 def _get_indent(line: str) -> int:
@@ -61,3 +61,16 @@ def read_tree(lines: Iterable[str]) -> list[tuple[str, str | None]]:
         last_name = name
         last_indent = indent
     return result
+
+
+NONE_2_INT_CHANGER = -1000
+
+
+def py2sqlite_type_converter(smth: Any) -> Any:
+    """ Convert python types to sqlite3 types """
+    if isinstance(smth, type(None)):
+        return NONE_2_INT_CHANGER
+    if type(smth) in [int, float, str]:
+        return smth
+
+    return str(smth)
